@@ -1,0 +1,128 @@
+//Funcion para encriptar contraseña
+  function encryptPassword(password) {
+    const md5 = crypto.createHash("md5");
+    md5.update(password);
+    return md5.digest("hex");
+  }
+
+  //Ruta para creacrion de usuario
+  server.route({
+    method: "POST",
+    path: "/create-user",
+    handler: async (request, h) => {
+      try {
+        const { name, lastname, email, password, scope, rut, status } =
+          request.payload;
+        const newUser = new User({
+          name,
+          lastname,
+          email,
+          password: encryptPassword(password),
+          scope,
+          rut,
+          status,
+        });
+        const userSaved = await newUser.save();
+        return h.response(userSaved).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+  //Ruta de vista login
+  server.route({
+    method: "GET",
+    path: "/",
+    handler: (request, h) => {
+      return h.view("login", { title: "Login" });
+    },
+  });
+
+  //Ruta para login
+  server.route({
+    method: "POST",
+    path: "/login",
+    handler: async (request, h) => {
+      try {
+        const { rut, password } = request.payload;
+        const user = await User.findOne({
+          rut,
+          password: encryptPassword(password),
+        });
+        if (user) {
+          return h.response('Login').code(200);
+        } else {
+          return h
+            .response({ message: "Usuario o contraseña incorrectos" })
+            .code(400);
+        }
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+  // Ruta para obtener todos los usuarios sin mostrar las constraseñas
+  server.route({
+    method: "GET",
+    path: "/users",
+    handler: async (request, h) => {
+      try {
+        const users = await User.find({}, { password: 0 });
+        return h.response(users).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+  //Ruta para obtener un usuario por id
+  server.route({
+    method: "GET",
+    path: "/users/{id}",
+    handler: async (request, h) => {
+      try {
+        const users = await User.findById(request.params.id, { password: 0 });
+        return h.response(users).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+  //Ruta para actualizar un usuario por id
+  server.route({
+    method: "PUT",
+    path: "/users/{id}",
+    handler: async (request, h) => {
+      try {
+        const { password, ...userData } = request.payload;
+        if (password) {
+          const hashedPasswrod = encryptPassword(password, 10);
+          userData.password = hashedPasswrod;
+        }
+        const userUpdated = await User.findByIdAndUpdate(
+          request.params.id,
+          userData,
+          { new: true }
+        );
+        return h.response(userUpdated).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+
+  //Ruta para eliminar un usuario por id
+  server.route({
+    method: "DELETE",
+    path: "/users/{id}",
+    handler: async (request, h) => {
+      try {
+        const userDeleted = await User.findByIdAndDelete(request.params.id);
+        return h.response(userDeleted).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  });
+
+  await server.start();
+  console.log(`Server running on port ${server.info.uri}`);

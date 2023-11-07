@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Lista de usuarios</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <table id="example" class="display" width="100%">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Scope</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+</table>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable( {
+            "ajax": {
+                "url": "http://localhost:3000/get-users",
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "name" },
+                { "data": "lastname" },
+                { "data": "email" },
+                { "data": "scope" },
+                { "data": "status" },
+                { "data": "_id",
+                    "render": function ( data, type, row, meta ) {
+                        return '<a href="/edit-user/'+data+'" class="btn btn-primary">Editar</a>';
+                    }
+                }
+            ]
+        } );
+    } );
+</script>

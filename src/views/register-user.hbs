@@ -1,1 +1,41 @@
 
+<div class="container">
+<h5>Registro de usuarios</h5>
+</div>
+<form class="container" style="max-width: 50%; gap: 2px;" method="post" action="/create-user">
+  <div class="form-group">
+    <label for="name">Nombre:</label>
+    <input type="text" class="form-control" id="name" name="name">
+  </div>
+  <div class="form-group">
+    <label for="lastname">Apellido:</label>
+    <input type="text" class="form-control" id="lastname" name="lastname">
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" id="email" name="email">
+  </div>
+  <div class="form-group">
+    <label for="rut">Rut:</label>
+    <input type="text" class="form-control" id="rut" name="rut">
+  </div>
+  <div class="form-group">
+    <label for="password">Contraseña:</label>
+    <input type="password" class="form-control" id="password" name="password">
+  </div>
+  <br>
+  <div class="d-grid gap-2">
+  <button type="submit" class="btn btn-primary">Enviar</button>
+    <br>
+    {{#if success}}
+    <div class="alert alert-success" role="alert" id="success-message">
+    
+        {{success}}
+    </div>
+    {{/if}}
+    {{#if error}}
+    <div class="alert alert-danger" role="alert" id="error-message">
+      {{error}}
+    {{/if}}
+  </div>
+</form>

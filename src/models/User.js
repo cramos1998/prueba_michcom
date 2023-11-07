@@ -20,7 +20,6 @@ const userSchema = new Schema({
     },
     scope: {
         type: String,
-        require: true,
     },
     rut: {
         type: String,
@@ -28,7 +27,6 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
-        require: true,
         }
 });
 

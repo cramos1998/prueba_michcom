@@ -1,0 +1,18 @@
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+  <div style="width: 50%; text-align: center;">
+    {{#if success}}
+    <div class="alert alert-success" role="alert" id="success-message">
+        {{success}}
+        <br>
+        <a class="btn btn-light" href="/">Volver al Home</a>
+    </div>
+    {{/if}}
+    {{#if error}}
+    <div class="alert alert-danger" role="alert" id="error-message">
+      {{error}}
+      <br>
+        <a class="btn btn-light" href="/register-user">Volver al Registro</a>
+    </div>
+    {{/if}}
+  </div>
+</div>

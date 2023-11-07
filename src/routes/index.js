@@ -165,6 +165,17 @@ module.exports = [
     },
   },
   {
+    method: "DELETE",
+    path: "/users/{id}",
+    handler: async (request, h) => {
+      try {
+        const userDeleted = await User.findByIdAndDelete(request.params.id);
+      } catch (error) {
+        return h.view("error", { error: "Intenta nuevamente" });
+      }
+    },
+  },
+  {
     method: "GET",
     path: "/logout",
     handler: (request, h) => {

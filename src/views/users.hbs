@@ -60,34 +60,28 @@
 </div>
 <script>
     $(document).ready(function () {
-        // Configuración de la tabla DataTable
+    // Configuración de la tabla DataTable
         $('#example').DataTable({
-            "ajax": {
-                "url": "http://localhost:3000/get-users",
-                "dataSrc": ""
+            ajax: {
+                url: 'http://localhost:3000/get-users',
+                dataSrc: ''
             },
-            "columns": [
-                { "data": "name" },
-                { "data": "lastname" },
-                { "data": "email" },
-                { "data": "scope" },
-                { "data": "status" },
+            columns: [
+                { data: 'name' },
+                { data: 'lastname' },
+                { data: 'email' },
+                { data: 'scope' },
+                { data: 'status' },
                 {
-                    "data": "id",
-                    "render": function (data, type, row, meta) {
+                    data: "id",
+                    render: function (data, type, row) {
                         const userData = JSON.stringify(row);
-                        return '<button class="btn btn-primary edit-user" data-user=\'' + userData + '\'>Editar</button>';
-                    }
-                },
-                { "data": "id",
-                    "render": function (data, type, row, meta) {
-                        const userData = JSON.stringify(row);
-                        return '<button class="btn btn-danger delete-user" data-user=\'' + userData + '\'>Eliminar</button>';
+                        return `<button class="btn btn-primary edit-user" data-user='${userData}'>Editar</button>
+                                <button class="btn btn-danger delete-user" data-user='${userData}'>Eliminar</button>`;
                     }
                 }
             ]
         });
-
         // Manejo de eventos para abrir el modal
         $('#example tbody').on('click', '.edit-user', function () {
             const user = JSON.parse($(this).attr('data-user'));
@@ -117,17 +111,13 @@
         $('#example tbody').on('click', '.delete-user', function () {
             const user = JSON.parse($(this).attr('data-user'));
             $.ajax({
-                url:`http://localhost:3000/users/${user.id}`,
-                method: 'POST',
+                url: `http://localhost:3000/users/`+user.id,
+                method: 'DELETE',
                 data: {
                     id: user.id
                 },
                 success: function (response) {
                     console.log(response);
-                    window.location.reload();
-                },
-                error: function (error) {
-                    console.log(error);
                 }
             });
         });

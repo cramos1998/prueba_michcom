@@ -38,8 +38,8 @@ async function configureServer() {
   server.auth.strategy("session", "cookie", {
     cookie: {
       name: "session",
-      password: "tu_contraseña_segura_de_al_menos_32_caracteres",
-      isSecure: true, // Cambia a true en producción, false para pruebas locales
+      password: process.env.NAMESECRET,
+      isSecure: false, // Cambia a true en producción, false para pruebas locales
       ttl: 24 * 60 * 60 * 1000,
       path: "/", // Ruta base para las cookies
       clearInvalid: false,

@@ -7,3 +7,4 @@ Configuraciones antes de iniciar el proyecto.
    DB_PASSWORD = Esta variable hace referencia a la contraseña del usuario de la base de datos
    DB_DATABASE = Esta variable hace referencia a el nombre de la base de datos
 3. Si configuras un localhost con un puerto distinto deberas cambiar la configuracion del server.js en el puerto y el archivo users.hbs ya que contienen la ruta con el puerto 3000
+4. 

@@ -157,7 +157,7 @@ module.exports = [
     path: "/get-users",
     handler: async (request, h) => {
         try{
-            const users = await Users.find({}, { _id: 0, __v: 0, password: 0 });
+            const users = await Users.find({}, { __v: 0, password: 0 });
             return h.response(users); 
         } catch (error) {
             return h.response({ error: "Error interno" }).code(500);
@@ -165,11 +165,33 @@ module.exports = [
     },
   },
   {
+    method: "PUT",
+    path: "/users/{id}",
+    handler: async (request, h) => {
+      try {
+        const { scope, status } =
+          request.payload;
+        const userUpdated = await Users.findByIdAndUpdate(
+          request.params.id,
+          {
+            scope,
+            status,
+          },
+          { new: true }
+        );
+        return h.response(userUpdated).code(200);
+      } catch (error) {
+        return h.response(error).code(500);
+      }
+    },
+  },
+  {
     method: "DELETE",
     path: "/users/{id}",
     handler: async (request, h) => {
       try {
-        const userDeleted = await User.findByIdAndDelete(request.params.id);
+        await Users.findByIdAndDelete(request.params.id);
+        return h.response({ success: "Usuario eliminado correctamente" });
       } catch (error) {
         return h.view("error", { error: "Intenta nuevamente" });
       }
